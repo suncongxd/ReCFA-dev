@@ -1,2 +1,0 @@
-1. nginx serve一个简单的网页，例如自己的个人主页，然后随机点击。
-2. 用wget从nginx server上下载文件。

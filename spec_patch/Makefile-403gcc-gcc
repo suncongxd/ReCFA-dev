@@ -1,0 +1,53 @@
+
+SOURCES= alias.c alloca.c asprintf.c attribs.c bb-reorder.c bitmap.c builtins.c \
+	 caller-save.c calls.c c-aux-info.c c-common.c c-convert.c c-decl.c c-errors.c \
+         cfg.c cfganal.c cfgbuild.c cfgcleanup.c cfglayout.c cfgloop.c cfgrtl.c c-format.c \
+         c-lang.c c-lex.c c-objc-common.c combine.c concat.c conflict.c convert.c \
+         c-parse.c cppdefault.c cpperror.c cppexp.c cppfiles.c cpphash.c cppinit.c cpplex.c \
+         cpplib.c cppmacro.c c-pragma.c cse.c cselib.c c-semantics.c c-typeck.c dbxout.c \
+         debug.c dependence.c df.c diagnostic.c doloop.c dominance.c dwarf2asm.c \
+         dwarf2out.c dwarfout.c emit-rtl.c except.c explow.c expmed.c expr.c fibheap.c \
+         final.c flow.c fold-const.c function.c gcse.c genrtl.c getpwd.c ggc-common.c \
+         ggc-page.c global.c graph.c haifa-sched.c hash.c hashtab.c hashtable.c \
+         hex.c hooks.c i386.c ifcvt.c insn-attrtab.c insn-emit.c insn-extract.c \
+         insn-opinit.c insn-output.c insn-peep.c insn-recog.c integrate.c intl.c jump.c \
+         langhooks.c lbasename.c lcm.c line-map.c lists.c local-alloc.c loop.c main.c \
+         mbchar.c md5.c mkdeps.c obstack.c optabs.c params.c partition.c predict.c \
+         prefix.c print-rtl.c print-tree.c profile.c real.c recog.c regclass.c regmove.c \
+         regrename.c reg-stack.c reload.c reload1.c reorg.c resource.c rtl.c rtlanal.c \
+         rtl-error.c safe-ctype.c sbitmap.c sched-deps.c sched-ebb.c sched-rgn.c \
+         sched-vis.c sdbout.c sibcall.c simplify-rtx.c splay-tree.c ssa.c ssa-ccp.c \
+         ssa-dce.c stmt.c stor-layout.c stringpool.c timevar.c toplev.c tree.c \
+         tree-dump.c tree-inline.c ucbqsort.c unroll.c varasm.c varray.c vasprintf.c \
+         version.c vmsdbgout.c xcoffout.c xexit.c xmalloc.c xstrdup.c xstrerror.c
+
+OBJECTS=$(SOURCES:.c=.o)
+
+CC=gcc
+LFLAGS=
+CFLAGS= -lm -DSPEC_CPU -DNDEBUG -DHAVE_CONFIG_H -I.
+FLAGS= $(LFLAGS) -g -O0 -mno-avx  -fno-stack-protector $(CFLAGS) -no-pie -DSPEC_CPU_LP64#-nostartfiles
+O= gcc_base.gcc_O0
+
+all: $(O)
+	objdump -d $(O) > $(O).asm
+
+$(O): $(OBJECTS)
+	$(CC) -o $(O) $(OBJECTS) $(FLAGS)
+	
+%.o: %.c
+	$(CC) -c -o $@ $< $(FLAGS)
+	readelf -s --wide $@ > $@.symtbl
+	readelf -S --wide $@ > $@.section
+	readelf -r --wide $@ > $@.reloca
+	#../../../reloc_based_targets.py $@ >> $(O).its
+	rm -rf $@.*
+
+clean:
+	rm -rf $(O) *.o $(O).asm $(O).its
+
+
+
+
+
+

@@ -1,0 +1,270 @@
+diff -ur --exclude Makefile src/bitmap.c gcc_src/bitmap.c
+--- src/bitmap.c	2007-10-10 07:08:21.000000000 +0800
++++ gcc_src/bitmap.c	2021-07-09 01:08:02.000000000 +0800
+@@ -112,8 +112,12 @@
+ #define OBSTACK_CHUNK_SIZE 0
+ #endif
+ 	  /* Let them override the alloc and free routines too.  */
++// #ifndef OBSTACK_CHUNK_ALLOC
++// #define OBSTACK_CHUNK_ALLOC xmalloc
++// #endif
++// line 115-115 replace with line line 119-l21 by zym in 2021/5/4
+ #ifndef OBSTACK_CHUNK_ALLOC
+-#define OBSTACK_CHUNK_ALLOC xmalloc
++#define OBSTACK_CHUNK_ALLOC callback_xmalloc
+ #endif
+ #ifndef OBSTACK_CHUNK_FREE
+ #define OBSTACK_CHUNK_FREE free
+diff -ur --exclude Makefile src/conflict.c gcc_src/conflict.c
+--- src/conflict.c	2005-06-03 10:43:52.000000000 +0800
++++ gcc_src/conflict.c	2021-07-09 01:08:18.000000000 +0800
+@@ -34,7 +34,9 @@
+ #include "basic-block.h"
+ 
+ /* Use malloc to allocate obstack chunks.  */
+-#define obstack_chunk_alloc xmalloc
++// #define obstack_chunk_alloc xmalloc
++// line 37 replace with line line 39 by zym in 2021/5/4
++#define obstack_chunk_alloc callback_xmalloc
+ #define obstack_chunk_free free
+ 
+ /* A register conflict graph is an undirected graph containing nodes
+diff -ur --exclude Makefile src/df.c gcc_src/df.c
+--- src/df.c	2005-06-03 10:43:52.000000000 +0800
++++ gcc_src/df.c	2021-07-09 01:08:28.000000000 +0800
+@@ -195,7 +195,9 @@
+   EXECUTE_IF_SET_IN_SBITMAP (BITMAP, MIN, node_,                \
+     {(BB) = BASIC_BLOCK (node_); CODE;});} while (0)
+ 
+-#define obstack_chunk_alloc xmalloc
++// #define obstack_chunk_alloc xmalloc
++// line 198 replace with line line 200 by zym in 2021/5/4
++#define obstack_chunk_alloc callback_xmalloc
+ #define obstack_chunk_free free
+ 
+ static struct obstack df_ref_obstack;
+diff -ur --exclude Makefile src/diagnostic.c gcc_src/diagnostic.c
+--- src/diagnostic.c	2005-06-03 10:43:52.000000000 +0800
++++ gcc_src/diagnostic.c	2021-07-09 01:08:28.000000000 +0800
+@@ -35,7 +35,9 @@
+ #include "intl.h"
+ #include "diagnostic.h"
+ 
+-#define obstack_chunk_alloc xmalloc
++// #define obstack_chunk_alloc xmalloc
++// line 38 replace with line line 40 by zym in 2021/5/4
++#define obstack_chunk_alloc callback_xmalloc
+ #define obstack_chunk_free  free
+ 
+ #define output_formatted_integer(BUFFER, FORMAT, INTEGER) \
+diff -ur --exclude Makefile src/flow.c gcc_src/flow.c
+--- src/flow.c	2005-06-03 10:43:52.000000000 +0800
++++ gcc_src/flow.c	2021-07-09 01:08:36.000000000 +0800
+@@ -140,7 +140,9 @@
+ #include "obstack.h"
+ #include "splay-tree.h"
+ 
+-#define obstack_chunk_alloc xmalloc
++// #define obstack_chunk_alloc xmalloc
++// line 143 replace with line line 145 by zym in 2021/5/4
++#define obstack_chunk_alloc callback_xmalloc
+ #define obstack_chunk_free free
+ 
+ /* EXIT_IGNORE_STACK should be nonzero if, when returning from a function,
+diff -ur --exclude Makefile src/gcse.c gcc_src/gcse.c
+--- src/gcse.c	2005-06-03 10:43:52.000000000 +0800
++++ gcc_src/gcse.c	2021-07-09 01:08:38.000000000 +0800
+@@ -164,7 +164,9 @@
+ #include "params.h"
+ 
+ #include "obstack.h"
+-#define obstack_chunk_alloc gmalloc
++// #define obstack_chunk_alloc gmalloc
++// 2021/5/4
++#define obstack_chunk_alloc callback_gmalloc
+ #define obstack_chunk_free free
+ 
+ /* Propagate flow information through back edges and thus enable PRE's
+@@ -951,6 +953,15 @@
+      unsigned int size;
+ {
+   bytes_used += size;
++  return xmalloc (size);
++}
++
++// 2021/5/4 added by zym
++static char *
++callback_gmalloc (size)
++     unsigned int size;
++{
++  bytes_used += size;
+   return xmalloc (size);
+ }
+ 
+diff -ur --exclude Makefile src/hash.c gcc_src/hash.c
+--- src/hash.c	2005-06-03 10:43:52.000000000 +0800
++++ gcc_src/hash.c	2021-07-09 01:08:44.000000000 +0800
+@@ -26,7 +26,9 @@
+ #include "toplev.h"
+ 
+ /* Obstack allocation and deallocation routines.  */
+-#define obstack_chunk_alloc xmalloc
++// #define obstack_chunk_alloc xmalloc
++// line 29 replace with line line 31 by zym in 2021/5/4
++#define obstack_chunk_alloc callback_xmalloc
+ #define obstack_chunk_free free
+ 
+ /* The default number of entries to use when creating a hash table.  */
+diff -ur --exclude Makefile src/hashtable.c gcc_src/hashtable.c
+--- src/hashtable.c	2005-06-03 10:43:52.000000000 +0800
++++ gcc_src/hashtable.c	2021-07-09 01:08:44.000000000 +0800
+@@ -38,8 +38,12 @@
+ #define OBSTACK_CHUNK_SIZE 0
+ #endif
+   /* Let them override the alloc and free routines too.  */
++// #ifndef OBSTACK_CHUNK_ALLOC
++// #define OBSTACK_CHUNK_ALLOC xmalloc
++// #endif
++// line 41-43 replace with line line 45-47 by zym in 2021/5/4
+ #ifndef OBSTACK_CHUNK_ALLOC
+-#define OBSTACK_CHUNK_ALLOC xmalloc
++#define OBSTACK_CHUNK_ALLOC callback_xmalloc
+ #endif
+ #ifndef OBSTACK_CHUNK_FREE
+ #define OBSTACK_CHUNK_FREE free
+diff -ur --exclude Makefile src/libiberty.h gcc_src/libiberty.h
+--- src/libiberty.h	2006-01-11 05:41:41.000000000 +0800
++++ gcc_src/libiberty.h	2021-07-09 01:08:56.000000000 +0800
+@@ -221,6 +221,8 @@
+    if any) and then call xexit.  */
+ 
+ extern PTR xmalloc PARAMS ((size_t)) ATTRIBUTE_MALLOC;
++// line 225 added by zym
++extern PTR callback_xmalloc PARAMS ((size_t)) ATTRIBUTE_MALLOC;
+ 
+ /* Reallocate memory without fail.  This works like xmalloc.  Note,
+    realloc type functions are not suitable for attribute malloc since
+diff -ur --exclude Makefile src/loop.c gcc_src/loop.c
+--- src/loop.c	2005-06-03 10:43:52.000000000 +0800
++++ gcc_src/loop.c	2021-07-09 01:09:00.000000000 +0800
+@@ -183,7 +183,9 @@
+ /* The value to pass to the next call of reg_scan_update.  */
+ static int loop_max_reg;
+ 
+-#define obstack_chunk_alloc xmalloc
++// #define obstack_chunk_alloc xmalloc
++// line 186 replace with line line 188 by zym in 2021/5/4
++#define obstack_chunk_alloc callback_xmalloc
+ #define obstack_chunk_free free
+ 
+ /* During the analysis of a loop, a chain of `struct movable's
+diff -ur --exclude Makefile src/regrename.c gcc_src/regrename.c
+--- src/regrename.c	2005-06-03 10:43:52.000000000 +0800
++++ gcc_src/regrename.c	2021-07-09 01:09:10.000000000 +0800
+@@ -36,7 +36,9 @@
+ #include "toplev.h"
+ #include "obstack.h"
+ 
+-#define obstack_chunk_alloc xmalloc
++// #define obstack_chunk_alloc xmalloc
++// line 39 replace with line line 41 by zym in 2021/5/4
++#define obstack_chunk_alloc callback_xmalloc
+ #define obstack_chunk_free free
+ 
+ #ifndef REGNO_MODE_OK_FOR_BASE_P
+diff -ur --exclude Makefile src/reload1.c gcc_src/reload1.c
+--- src/reload1.c	2005-06-03 10:43:52.000000000 +0800
++++ gcc_src/reload1.c	2021-07-09 01:09:12.000000000 +0800
+@@ -280,7 +280,9 @@
+    Used to quickly free all memory after processing one insn.  */
+ static char *reload_insn_firstobj;
+ 
+-#define obstack_chunk_alloc xmalloc
++// #define obstack_chunk_alloc xmalloc
++// line 283 replace with line line 285 by zym in 2021/5/4
++#define obstack_chunk_alloc callback_xmalloc
+ #define obstack_chunk_free free
+ 
+ /* List of insn_chain instructions, one for every insn that reload needs to
+diff -ur --exclude Makefile src/reorg.c gcc_src/reorg.c
+--- src/reorg.c	2005-06-03 10:43:52.000000000 +0800
++++ gcc_src/reorg.c	2021-07-09 01:09:12.000000000 +0800
+@@ -143,7 +143,9 @@
+ 
+ #ifdef DELAY_SLOTS
+ 
+-#define obstack_chunk_alloc xmalloc
++// #define obstack_chunk_alloc xmalloc
++// line 146 replace with line line 148 by zym in 2021/5/4
++#define obstack_chunk_alloc callback_xmalloc
+ #define obstack_chunk_free free
+ 
+ #ifndef ANNUL_IFTRUE_SLOTS
+diff -ur --exclude Makefile src/stmt.c gcc_src/stmt.c
+--- src/stmt.c	2005-06-03 10:43:52.000000000 +0800
++++ gcc_src/stmt.c	2021-07-09 01:09:20.000000000 +0800
+@@ -54,7 +54,9 @@
+ #include "output.h"
+ #include "ggc.h"
+ 
+-#define obstack_chunk_alloc xmalloc
++// #define obstack_chunk_alloc xmalloc
++// line 57 replace with line line 59 by zym in 2021/5/4
++#define obstack_chunk_alloc callback_xmalloc
+ #define obstack_chunk_free free
+ struct obstack stmt_obstack;
+ 
+diff -ur --exclude Makefile src/tree.c gcc_src/tree.c
+--- src/tree.c	2006-01-24 23:06:20.000000000 +0800
++++ gcc_src/tree.c	2021-07-09 01:09:28.000000000 +0800
+@@ -47,7 +47,9 @@
+ #include "target.h"
+ #include "langhooks.h"
+ 
+-#define obstack_chunk_alloc xmalloc
++// #define obstack_chunk_alloc xmalloc
++// line 50 replace with line line 52 by zym in 2021/5/4
++#define obstack_chunk_alloc callback_xmalloc
+ #define obstack_chunk_free free
+ /* obstack.[ch] explicitly declined to prototype this.  */
+ extern int _obstack_allocated_p PARAMS ((struct obstack *h, PTR obj));
+diff -ur --exclude Makefile src/varasm.c gcc_src/varasm.c
+--- src/varasm.c	2005-10-18 14:10:31.000000000 +0800
++++ gcc_src/varasm.c	2021-07-09 01:09:32.000000000 +0800
+@@ -66,7 +66,9 @@
+ const char *weak_global_object_name;
+ 
+ extern struct obstack permanent_obstack;
+-#define obstack_chunk_alloc xmalloc
++// #define obstack_chunk_alloc xmalloc
++// line 69 replace with line line 71 by zym in 2021/5/4
++#define obstack_chunk_alloc callback_xmalloc
+ 
+ struct addr_const;
+ struct constant_descriptor;
+diff -ur --exclude Makefile src/xmalloc.c gcc_src/xmalloc.c
+--- src/xmalloc.c	2005-06-03 10:43:52.000000000 +0800
++++ gcc_src/xmalloc.c	2021-07-09 01:09:34.000000000 +0800
+@@ -146,6 +146,22 @@
+ }
+ 
+ PTR
++callback_xmalloc (size)
++    size_t size;
++{
++  PTR newmem;
++
++  if (size == 0)
++    size = 1;
++  newmem = malloc (size);
++  if (!newmem)
++    xmalloc_failed (size);
++
++  return (newmem);
++}
++
++
++PTR
+ xcalloc (nelem, elsize)
+   size_t nelem, elsize;
+ {

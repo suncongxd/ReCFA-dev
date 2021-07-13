@@ -1,0 +1,12 @@
+diff -ur --exclude Makefile src/plan7.c hmmer_src/plan7.c
+--- src/plan7.c	2005-09-18 09:43:15.000000000 +0800
++++ hmmer_src/plan7.c	2021-07-09 01:09:48.000000000 +0800
+@@ -300,7 +300,7 @@
+       hmm->comlog = MallocOrDie(sizeof(char)* (len+1));
+       *(hmm->comlog) = '\0'; /* need this to make strcat work */
+     }
+-
++printf("",hmm->comlog);
+   /* append */
+   strcat(hmm->comlog, "\n");
+   for (i = 0; i < argc; i++)
