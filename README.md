@@ -56,12 +56,12 @@ Repo for the dev of ReCFA.
 
 - Deploying dyninst-10.1.0 for ReCFA, add to `~/.bashrc`
   ```
-DYNINST_HOME=~/dyninst-10.1.0
-export DYNINST_INCLUDE=$DYNINST_HOME/install/include
-export DYNINST_LIB=$DYNINST_HOME/install/lib
-export DYNINSTAPI_RT_LIB=$DYNINST_LIB/libdyninstAPI_RT.so
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$DYNINST_LIB
-export PATH=$PATH:$DYNINST_INCLUDE:$DYNINSTAPI_RT_LIB
+  DYNINST_HOME=~/dyninst-10.1.0
+  export DYNINST_INCLUDE=$DYNINST_HOME/install/include
+  export DYNINST_LIB=$DYNINST_HOME/install/lib
+  export DYNINSTAPI_RT_LIB=$DYNINST_LIB/libdyninstAPI_RT.so
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$DYNINST_LIB
+  export PATH=$PATH:$DYNINST_INCLUDE:$DYNINSTAPI_RT_LIB
   ```
 
 #### Build csfilter.jar
