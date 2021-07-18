@@ -58,18 +58,3 @@ build () {
 build $CP
 
 
-<<comment
-for name in ${case_names[@]}
-do
-  cd $spec_build_root"/"$name"/exe"
-  for i in `ls`
-  do
-    if [[ $i == *".cfa" ]]; then
-      bin_path=$spec_build_root"/"$name"/exe/"$i
-      bin_store=$spec_build_root"/"$name"/exe/"$i"_bak"
-      cp -f $bin_path $bin_store
-    fi
-  done
-done
-
-comment

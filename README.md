@@ -38,6 +38,7 @@ Repo for the dev of ReCFA.
   make install
   ```
   - Keep the network connected (This procedure will download several components)
+  - To install dyninst 10.1 for ReCFA follows the similar instructions.
 
 - Install typearmor
   ```
@@ -52,6 +53,25 @@ Repo for the dev of ReCFA.
   make install
   ```
   - make the directory "out" is important, otherwise typearmor reports segment fault.
+
+- Deploying dyninst-10.1.0 for ReCFA, add to `~/.bashrc`
+  ```
+DYNINST_HOME=~/dyninst-10.1.0
+export DYNINST_INCLUDE=$DYNINST_HOME/install/include
+export DYNINST_LIB=$DYNINST_HOME/install/lib
+export DYNINSTAPI_RT_LIB=$DYNINST_LIB/libdyninstAPI_RT.so
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$DYNINST_LIB
+export PATH=$PATH:$DYNINST_INCLUDE:$DYNINSTAPI_RT_LIB
+  ```
+
+#### Build csfilter.jar
+
+```
+cd csfilter
+make
+make clean
+```
+Then, copy `csfilter.jar` to the `bin` of ReCFA.
 
 ### Contributor ###
 
