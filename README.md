@@ -25,7 +25,6 @@ Repo for the dev of ReCFA.
   sudo apt-get update
   sudo apt-get upgrade
   sodo apt-get install build-essential cmake m4 texlive-latex-base flex bison zlib1g-dev libboost-all-dev libelf-dev libiberty-dev
-
   ```
   Note: Do not install libdwarf-dev using apt.
 - Install dyninst
