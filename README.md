@@ -70,7 +70,8 @@ Repo for the dev of ReCFA.
   ```
   cd spec2006
   source ./shrc
-  ../run_instrumented
+  cd ..
+  ./run_instrumented.sh
   ```
 
 ### Contributor ###
