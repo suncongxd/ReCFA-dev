@@ -1,0 +1,7 @@
+替换掉该benchmark文件夹下data文件文件夹下的test文件夹（建议将原先的test文件夹另存，以防需要用到）
+
+对于400.perlbench，使用本文件夹下的400.perlbech中的test文件夹替换掉spec2006/benchspec/CPU2006/400.perlbench/data文件夹下的test文件夹
+
+对于445.gobmk，使用本文件夹下的445.gobmk中的test文件夹替换掉spec2006/benchspec/CPU2006/445.gobmk/data文件夹下的test文件夹
+
+
