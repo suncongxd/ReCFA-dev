@@ -1,4 +1,5 @@
 /spec2006/
 sos_spec06.tar.xz
-/tool_config/
-/useless/
+/private_tmp/
+/spec_gcc/
+/spec_llvm/
