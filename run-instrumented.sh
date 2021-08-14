@@ -1,10 +1,12 @@
 #! /bin/bash
 
+CP=$1
+
 spec_root=$(pwd)/spec2006
 gcc_cfg_path=$spec_root/config/gcc-O0-instru.cfg
 llvm_cfg_path=$spec_root/config/llvm-O0-instru.cfg
 
-case_nums=(400 401 403 429 433 445 456 462 464 470 482) #
+case_nums=(403 400 401 429 433 445 456 462 464 470 482) # 
 
 run_gcc(){
   for case_num in ${case_nums[*]}; do
@@ -20,8 +22,11 @@ run_llvm(){
   done
 }
 
-run_gcc
-#run_llvm
+if [[ $CP = "gcc" ]]; then
+  run_gcc
+elif [[ $CP = "llvm" ]]; then
+  run_llvm
+fi
 
 #runspec -c $cfg_path -i test -n 1 --noreportable --nobuild -I --action run 400
 #runspec -c $cfg_path -i test -n 1 --noreportable --nobuild -I --action run 401
